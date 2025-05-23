@@ -13,22 +13,16 @@ fn main() {
 
 fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.spawn(Camera2d);
-    commands.spawn(
-        (
-            //xd
-            AnimatedImageController::play(asset_server.load("foo.gif"))
-        ),
-    );
+    commands.spawn(AnimatedImageController::play(asset_server.load("foo.gif")));
 }
 
 fn print(
-    mut playing_images: Query<(Entity, &mut AnimatedImageController, &mut Sprite)>,
-    // animated_images: Res<Assets<AnimatedImage>>,
+    playing_images: Query<(Entity, &mut AnimatedImageController, &mut Sprite)>,
     images: Res<Assets<Image>>,
     time: Res<Time>,
 ) {
-    for (e, a, s) in &playing_images {
-        let img = images.get(&s.image).unwrap();
+    for (_entity, _animated_image_controller, sprite) in &playing_images {
+        let img = images.get(&sprite.image).unwrap();
         dbg!(img.size(), time.elapsed());
     }
 }
